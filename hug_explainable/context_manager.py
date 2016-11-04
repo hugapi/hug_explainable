@@ -9,14 +9,14 @@ import hug
 def explainable(explanation, value, explain=None):
     """Mark a section of code as explainable, applying the explanation and time information if requested"""
     if explain is None:
-        yield
+        yield value
         return
 
     timer = hug.directives.Timer(5)
     given_explanation = {explanation: deepcopy(value)}
     explain.append(given_explanation)
     try:
-        yield
+        yield value
     except Exception as exception:
         exception.explanation = explain
         given_explanation['failed_after'] = float(timer)
