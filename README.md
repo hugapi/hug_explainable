@@ -1,4 +1,4 @@
-![hug_explainable](https://raw.github.com/timothycrosley/hug_explainable/develop/artwork/logo.png)
+Hug Explainable
 ===================
 
 [![PyPI version](https://badge.fury.io/py/hug_explainable.svg)](http://badge.fury.io/py/hug_explainable)
@@ -8,8 +8,6 @@
 [![Join the chat at https://gitter.im/timothycrosley/hug_explainable](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/timothycrosley/hug_explainable?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Provides an on demand context manager that makes it easy to profile and explain code blocks / paths within hug.
-
-[![hug_explainable Example](https://raw.github.com/timothycrosley/hug_explainable/develop/artwork/example.gif)](https://github.com/timothycrosley/hug_explainable/blob/develop/examples/example.py)
 
 
 Installing hug_explainable
