@@ -1,4 +1,5 @@
 """A hug directive that enables easy interaction and storage of profiling information and code path explanations."""
+from copy import deepcopy
 import hug
 
 from hug_explainable.context_manager import explainable
@@ -20,10 +21,39 @@ class Explainable(object):
         """Disables the recording of explanations of individual code blocks"""
         self.explanation = None
 
-    def insert(self, dictionary):
+    @property
+    def enabled(self):
+        """Returns True if the explanations are enabled"""
+        return bool(self)
+
+    @enabled.setter
+    def enabled(self, enable):
+        """Switches between enabled and not based on a boolean flag"""
+        if enable:
+            self.enable()
+        else:
+            self.disable()
+
+    def insert_into(self, dictionary):
         """Inserts the explanation if there is one, otherwise performs a noop"""
         if self:
             dictionary['explanation'] = self.explanation
+
+
+    def __getitem__(self, index):
+        if type(index) == int:
+            return self.explanation.__getitem__(index)
+        for item in self:
+            if item.get(index, None):
+                return item
+
+        raise KeyError('Explanation not found')
+
+    def __setitem__(self, explanation, value):
+        if type(explanation) == int:
+            return self.explanation.__getitem__(explanation)
+        if self:
+            self.explanation.append({explanation: deepcopy(value), 'took': 0.0})
 
     def __bool__(self):
         return self.explanation != None
@@ -35,25 +65,22 @@ class Explainable(object):
         return self.explanation
 
     def __iter__(self):
-        return self.explanation.__iter__()
+        return self.explanation.__iter__() if self else ().__iter__()
 
     def __contains__(self, item):
-        return self.explanation.__contains__(item)
+        return self.explanation.__contains__(item) if self else False
 
     def __len__(self):
-        return self.explanation.__len__()
-
-    def __getitem__(self, key):
-        return self.explanation.__getitem__(key)
-
-    def __setitem__(self, key, value):
-        return self.explanation.__setitem__(key, value)
+        return self.explanation.__len__() if self else 0
 
     def __delitem__(self, item):
         return self.explanation.__delitem__(item)
 
     def __reversed__(self):
-        return self.explanation.__reversed__()
+        return self.explanation.__reversed__() if self else ().__reversed__()
 
-    def __contains__(self, item):
-        return self.explanation.__contains__(item)
+    def append(self, value):
+        return self.explanation.append(value)
+
+    def pop(self, index, *kargs, **kwargs):
+        return self.explanation.pop(index, *kargs, **kwargs)
