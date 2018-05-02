@@ -39,6 +39,12 @@ class Explainable(object):
         if self:
             dictionary['explanation'] = self.explanation
 
+    def explained(self, dictionary):
+        """Returns an explained version of the dictionary if explainations are enabled,
+           otherwise the dictionary unchanged
+        """
+        self.insert_into(dictionary)
+        return dictionary
 
     def __getitem__(self, index):
         if type(index) == int:
