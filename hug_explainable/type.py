@@ -4,10 +4,13 @@ import hug
 from hug_explainable.directive import Explainable
 
 
-@hug.type(extend=hug.types.smart_boolean)
-def explainable_toggle(enabled):
+class ExplainableToggle(hug.types.SmartBoolean):
     """If set to True this endpoint will return explainations as well as profiling information."""
-    if isinstance(enabled, Explainable):
-        return enabled
-    
-    return Explainable(enabled=enabled)
+
+    def __call__(self, enabled):
+        if isinstance(enabled, Explainable):
+            return enabled
+        return Explainable(enabled=super().__call__(enabled))
+
+
+explainable_toggle = ExplainableToggle()
