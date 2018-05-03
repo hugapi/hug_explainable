@@ -4,4 +4,6 @@ from hug_explainable.directive import Explainable
 from hug_explainable.type import explainable_toggle
 from hug_explainable.context_manager import explainable
 
+DONT_EXPLAIN = explainable_toggle(False)
+
 __version__ = current
