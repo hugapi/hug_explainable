@@ -1,19 +1,26 @@
 """Provides a simple context manager for adding on to an explanation"""
+from datetime import datetime
 from contextlib import contextmanager
 from copy import deepcopy
+
+from inspect import getframeinfo, stack
 
 import hug
 
 
 @contextmanager
-def explainable(explanation, value, explain=None):
+def explainable(explanation, value=None, explain=None):
     """Mark a section of code as explainable, applying the explanation and time information if requested"""
     if explain is None:
         yield value
         return
 
     timer = hug.directives.Timer(5)
-    given_explanation = {explanation: deepcopy(value)}
+    caller = getframeinfo(stack()[2][0])
+    now = datetime.now()
+    given_explanation = {'action': explanation, 'value': deepcopy(value), 'line': caller.lineno, 'file': caller.filename,
+                         'time': '{}:{}:{}'.format(now.hour, now.minute, now.second), 'datetime': now.isoformat(),
+                         'date': now.date().isoformat()}
     explain.append(given_explanation)
     try:
         yield value

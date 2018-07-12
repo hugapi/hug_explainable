@@ -59,7 +59,7 @@ class Explainable(object):
         if type(explanation) == int:
             return self.explanation.__getitem__(explanation)
         if self:
-            self.explanation.append({explanation: deepcopy(value), 'took': 0.0})
+            self.explanation.append({'action': explanation, 'value': deepcopy(value), 'took': 0.0})
 
     def __bool__(self):
         return self.explanation != None
@@ -90,3 +90,10 @@ class Explainable(object):
 
     def pop(self, index, *kargs, **kwargs):
         return self.explanation.pop(index, *kargs, **kwargs)
+
+
+@hug.directive()
+def explain(default=None, response=None, **kwargs):
+    """Returns the current explanation object if one is present within the response context"""
+    return (response.context if response else {}).get('explanation', Explainable(False))
+
