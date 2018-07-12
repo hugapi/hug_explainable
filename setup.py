@@ -62,7 +62,7 @@ except (IOError, ImportError, OSError, RuntimeError):
    readme = ''
 
 setup(name='hug_explainable',
-      version='0.0.8',
+      version='0.1.0',
       description='Provides an on demand context manager that makes it easy to profile and explain code blocks / paths within hug.',
       long_description=readme,
       author='Timothy Crosley',

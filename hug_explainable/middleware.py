@@ -442,7 +442,7 @@ def init(api, option='explain', code_urls=None):
                 for explanation in response.context['explanation'].explanation:
                     code_url = ''
                     for match, url in (code_urls or {}).items():
-                        if match in explanation['file']:
+                        if file in explanation and match in explanation['file']:
                             code_url = url + explanation['file'].split(match)[-1]
                             break
                     explanations.append(EXPLANATION.format(data=json.dumps(explanation['value'], indent=4),

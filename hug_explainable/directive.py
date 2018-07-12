@@ -1,8 +1,10 @@
 """A hug directive that enables easy interaction and storage of profiling information and code path explanations."""
 from copy import deepcopy
+from datetime import datetime
 import hug
 
 from hug_explainable.context_manager import explainable
+from inspect import getframeinfo, stack
 
 
 @hug.directive()
@@ -59,7 +61,12 @@ class Explainable(object):
         if type(explanation) == int:
             return self.explanation.__getitem__(explanation)
         if self:
-            self.explanation.append({'action': explanation, 'value': deepcopy(value), 'took': 0.0})
+            now = datetime.now()
+            caller = getframeinfo(stack()[1][0])
+            self.explanation.append({'action': explanation, 'value': deepcopy(value), 'line': caller.lineno,
+                                     'file': caller.filename,
+                                     'time': '{}:{}:{}'.format(now.hour, now.minute, now.second),
+                                     'datetime': now.isoformat(), 'date': now.date().isoformat(), 'took': 0.0})
 
     def __bool__(self):
         return self.explanation != None
