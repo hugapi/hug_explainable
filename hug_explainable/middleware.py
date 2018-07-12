@@ -440,17 +440,21 @@ def init(api, option='explain', code_urls=None):
                 explanations = []
                 response.content_type = 'text/html; charset=utf-8'
                 for explanation in response.context['explanation'].explanation:
+                    if not explanation.get('action', ''):
+                        continue
+
                     code_url = ''
                     for match, url in (code_urls or {}).items():
                         if 'file' in explanation and match in explanation['file']:
-                            code_url = url + explanation['file'].split(match)[-1]
+                            code_url = "{}{}#L{}".format(url, explanation['file'].split(match)[-1],
+                                                         explanation.get('line', 0))
                             break
                     explanations.append(EXPLANATION.format(data=json.dumps(explanation.get('value', ''), indent=4),
-                                                            description=explanation.get('action'. ''),
+                                                            description=explanation.get('action', ''),
                                                             date=explanation.get('date', ''),
                                                             time=explanation.get('time', ''),
                                                             datetime=explanation.get('datetime', ''),
-                                                            took=explanation.get('took', ''),
+                                                            took=explanation.get('took', 0.0),
                                                             file=explanation.get('file', ''),
                                                             line=explanation.get('line', ''),
                                                             code_url=code_url))
