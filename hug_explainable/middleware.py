@@ -442,16 +442,16 @@ def init(api, option='explain', code_urls=None):
                 for explanation in response.context['explanation'].explanation:
                     code_url = ''
                     for match, url in (code_urls or {}).items():
-                        if file in explanation and match in explanation['file']:
+                        if 'file' in explanation and match in explanation['file']:
                             code_url = url + explanation['file'].split(match)[-1]
                             break
-                    explanations.append(EXPLANATION.format(data=json.dumps(explanation['value'], indent=4),
-                                                            description=explanation['action'],
-                                                            date=explanation['date'],
-                                                            time=explanation['time'],
-                                                            datetime=explanation['datetime'],
-                                                            took=explanation['took'],
-                                                            file=explanation['file'],
-                                                            line=explanation['line'],
+                    explanations.append(EXPLANATION.format(data=json.dumps(explanation.get('value', ''), indent=4),
+                                                            description=explanation.get('action'. ''),
+                                                            date=explanation.get('date', ''),
+                                                            time=explanation.get('time', ''),
+                                                            datetime=explanation.get('datetime', ''),
+                                                            took=explanation.get('took', ''),
+                                                            file=explanation.get('file', ''),
+                                                            line=explanation.get('line', ''),
                                                             code_url=code_url))
                 response.body = hug.output_format.html(DOCUMENT.replace('{content}', '\n'.join(explanations)))
