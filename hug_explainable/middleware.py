@@ -449,7 +449,8 @@ def init(api, option='explain', code_urls=None):
                             code_url = "{}{}#L{}".format(url, explanation['file'].split(match)[-1],
                                                          explanation.get('line', 0))
                             break
-                    explanations.append(EXPLANATION.format(data=json.dumps(explanation.get('value', ''), indent=4),
+                    explanations.append(EXPLANATION.format(data=api.http.output_format(explanation.get('value', ''),
+                                                                                       indent=4),
                                                             description=explanation.get('action', ''),
                                                             date=explanation.get('date', ''),
                                                             time=explanation.get('time', ''),
