@@ -412,13 +412,14 @@ EXPLANATION = """
 <li>
     <time class="cbp_tmtime" datetime="{datetime}"><span>{date}</span> <span>{time}</span></time>
     <div class="cbp_tmicon cbp_tmicon-screen"></div>
-    <div class="cbp_tmlabel">
+    <div class="cbp_tmlabel" style="{extra_css}">
         <h2>{description}</h2>
         <pre>{data}</pre>
         <a href="{code_url}">
         {file}: {line}
         </a>
         <p>Took: {took}</p>
+        {extra_html}
     </div>
 </li>
 """
@@ -449,8 +450,14 @@ def init(api, option='explain', code_urls=None):
                             code_url = "{}{}#L{}".format(url, explanation['file'].split(match)[-1],
                                                          explanation.get('line', 0))
                             break
+
+                    extra_html = ''
+                    if 'failed_with' in explanation:
+                        extra_html = '<b>FAILED: {}</b>'.format(explanation['failed_with'])
+                        if 'failed_after' in explanation:
+                            explanation['took'] = explanation['failed_after']
                     explanations.append(EXPLANATION.format(data=api.http.output_format(explanation.get('value', ''),
-                                                                                       indent=4),
+                                                                                       indent=4).decode('utf8'),
                                                             description=explanation.get('action', ''),
                                                             date=explanation.get('date', ''),
                                                             time=explanation.get('time', ''),
@@ -458,5 +465,8 @@ def init(api, option='explain', code_urls=None):
                                                             took=explanation.get('took', 0.0),
                                                             file=explanation.get('file', ''),
                                                             line=explanation.get('line', ''),
-                                                            code_url=code_url))
+                                                            extra_css='background-color: #a70000;' if 'failed_with' in
+                                                                      explanation else '',
+                                                            code_url=code_url,
+                                                            extra_html=extra_html))
                 response.body = hug.output_format.html(DOCUMENT.replace('{content}', '\n'.join(explanations)))
