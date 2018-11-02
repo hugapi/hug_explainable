@@ -1,12 +1,11 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """Defines the setup instructions for hug_explainable"""
 import glob
 import os
-import subprocess
 import sys
 from os import path
 
-from setuptools import Extension, find_packages, setup
+from setuptools import Extension, setup
 from setuptools.command.test import test as TestCommand
 
 MYDIR = path.abspath(os.path.dirname(__file__))
@@ -60,38 +59,43 @@ with open('README.md', encoding='utf-8') as f:  # Loads in the README for PyPI
     long_description = f.read()
 
 
-setup(name='hug_explainable',
-      version='0.2.1',
-      description='Provides an on demand context manager that makes it easy to profile and explain code blocks / paths within hug.',
-      long_description=long_description,
-      # PEP 566, the new PyPI, and setuptools>=38.6.0 make markdown possible
-      long_description_content_type='text/markdown',
-      author='Timothy Crosley',
-      author_email='timothy.crosley@gmail.com',
-      url='https://github.com/timothycrosley/hug_explainable',
-      license="MIT",
-      # entry_points={
-      #  'console_scripts': [
-      #      'hug_explainable = hug_explainable:run.terminal',
-      #  ]
-      #},
-      packages=['hug_explainable'],
-      requires=[],
-      install_requires=['hug'],
-      cmdclass=cmdclass,
-      ext_modules=ext_modules,
-      keywords='Python, Python3',
-      classifiers=['Development Status :: 6 - Mature',
-                   'Intended Audience :: Developers',
-                   'Natural Language :: English',
-                   'Environment :: Console',
-                   'License :: OSI Approved :: MIT License',
-                   'Programming Language :: Python',
-                   'Programming Language :: Python :: 3',
-                   'Programming Language :: Python :: 3.2',
-                   'Programming Language :: Python :: 3.3',
-                   'Programming Language :: Python :: 3.4',
-                   'Programming Language :: Python :: 3.5',
-                   'Topic :: Software Development :: Libraries',
-                   'Topic :: Utilities'],
-      **PyTest.extra_kwargs)
+setup(
+    name='hug_explainable',
+    version='0.2.1',
+    description='Provides an on demand context manager that makes it easy '
+                'to profile and explain code blocks / paths within hug.',
+    long_description=long_description,
+    # PEP 566, the new PyPI, and setuptools>=38.6.0 make markdown possible
+    long_description_content_type='text/markdown',
+    author='Timothy Crosley',
+    author_email='timothy.crosley@gmail.com',
+    url='https://github.com/timothycrosley/hug_explainable',
+    license="MIT",
+    # entry_points={
+    #  'console_scripts': [
+    #      'hug_explainable = hug_explainable:run.terminal',
+    #  ]
+    # },
+    packages=['hug_explainable'],
+    requires=[],
+    install_requires=['hug'],
+    cmdclass=cmdclass,
+    ext_modules=ext_modules,
+    keywords='Python, Python3',
+    classifiers=[
+        'Development Status :: 6 - Mature',
+        'Intended Audience :: Developers',
+        'Natural Language :: English',
+        'Environment :: Console',
+        'License :: OSI Approved :: MIT License',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.2',
+        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Topic :: Software Development :: Libraries',
+        'Topic :: Utilities',
+    ],
+    **PyTest.extra_kwargs
+)
